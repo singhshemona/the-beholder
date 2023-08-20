@@ -8,7 +8,7 @@ function App() {
   let classifier: { classify: (arg0: any, arg1: (error: Error, results: [{ label: ""; }]) => void) => void; };
   let imageModelURL = 'https://teachablemachine.withgoogle.com/models/wZm28bHVl/';
   let video: P5.Element;
-  let flippedVideo: P5.Element | P5.Image;
+  let flippedVideo: P5.Element;
   let label = "";
 
   const preload = () => {
@@ -38,12 +38,41 @@ function App() {
   function classifyVideo() {
     flippedVideo = ml5.flipImage(video)
     classifier.classify(flippedVideo, gotResult);
+    flippedVideo.remove(); // might be able to remove this line
   }
   
   function gotResult(error: Error, results: [{ label: '' }]) {
     if (error) throw(error);
 
     console.log(results);
+    // gives me the following for each type:
+    //   [
+    //     {
+    //         "label": "ancient greece",
+    //         "confidence": 0.7369839549064636
+    //     },
+    //     {
+    //         "label": "brazilian",
+    //         "confidence": 0.12226172536611557
+    //     },
+    //     {
+    //         "label": "indian",
+    //         "confidence": 0.04230986163020134
+    //     },
+    //     {
+    //         "label": "ghana",
+    //         "confidence": 0.0380224883556366
+    //     },
+    //     {
+    //         "label": "ancient egypt",
+    //         "confidence": 0.03510032966732979
+    //     },
+    //     {
+    //         "label": "korean",
+    //         "confidence": 0.025321567431092262
+    //     }
+    // ]
+    
     label = results[0].label;
     classifyVideo();
   }
