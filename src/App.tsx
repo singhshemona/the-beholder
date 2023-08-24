@@ -1,15 +1,17 @@
 import './App.css';
 import Sketch from 'react-p5';
 import P5 from 'p5';
+import { DataModel } from './model';
 
 const ml5 = require('ml5');
 
 function App() {
-  let classifier: { classify: (arg0: any, arg1: (error: Error, results: [{ label: ""; }]) => void) => void; };
+  let classifier: { classify: (arg0: any, arg1: (error: Error, results: DataModel) => void) => void; };
   let imageModelURL = 'https://teachablemachine.withgoogle.com/models/wZm28bHVl/';
   let video: P5.Element;
   let flippedVideo: P5.Element;
   let label = "";
+  let indianConfidenceInterval = 0;
 
   const preload = () => {
     classifier = ml5.imageClassifier(imageModelURL + 'model.json');
@@ -17,9 +19,9 @@ function App() {
 
   const setup = (p5: P5, canvasParentRef: any) => {
     ml5.p5Utils.setP5Instance(p5);
-    p5.createCanvas(320, 260).parent(canvasParentRef);
+    p5.createCanvas(1000, 1000).parent(canvasParentRef);
     video = p5.createCapture(p5.VIDEO);
-    video.size(320, 240);
+    video.size(700, 525);
     video.hide();
     flippedVideo = ml5.flipImage(video)
     classifyVideo();
@@ -31,55 +33,33 @@ function App() {
 
     p5.fill(255);
     p5.textSize(16);
-    p5.textAlign(p5.CENTER);
-    p5.text(label, 100, 100);
+    p5.text(label, 300, 450);
+
+    p5.fill(255);
+    p5.textSize(16);
+    p5.text('Indian', 30, 70);
+
+    p5.fill('blue')
+    p5.rect(0, 0, (100 * indianConfidenceInterval), 30);
   }
 
   function classifyVideo() {
     flippedVideo = ml5.flipImage(video)
-    classifier.classify(flippedVideo, gotResult);
-    flippedVideo.remove(); // might be able to remove this line
+    classifier.classify(flippedVideo, getResult);
   }
   
-  function gotResult(error: Error, results: [{ label: '' }]) {
+  function getResult(error: Error, results: DataModel) {
     if (error) throw(error);
-
-    console.log(results);
-    // gives me the following for each type:
-    //   [
-    //     {
-    //         "label": "ancient greece",
-    //         "confidence": 0.7369839549064636
-    //     },
-    //     {
-    //         "label": "brazilian",
-    //         "confidence": 0.12226172536611557
-    //     },
-    //     {
-    //         "label": "indian",
-    //         "confidence": 0.04230986163020134
-    //     },
-    //     {
-    //         "label": "ghana",
-    //         "confidence": 0.0380224883556366
-    //     },
-    //     {
-    //         "label": "ancient egypt",
-    //         "confidence": 0.03510032966732979
-    //     },
-    //     {
-    //         "label": "korean",
-    //         "confidence": 0.025321567431092262
-    //     }
-    // ]
     
-    label = results[0].label;
+    label = results[0].label; // TODO: might be able to delete eventually
+    indianConfidenceInterval = results[2].confidence
+
     classifyVideo();
   }
 
   return (
     <div className="App">
-      <Sketch setup={setup} draw={draw} preload={preload}/>
+      <Sketch setup={setup} draw={draw} preload={preload} />
     </div>
   );
 }
