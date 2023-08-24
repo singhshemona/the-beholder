@@ -10,8 +10,13 @@ function App() {
   let imageModelURL = 'https://teachablemachine.withgoogle.com/models/wZm28bHVl/';
   let video: P5.Element;
   let flippedVideo: P5.Element;
-  let label = "";
+  
+  let ancientGreeceInterval = 0;
+  let brazilianConfidenceInterval = 0;
   let indianConfidenceInterval = 0;
+  let ghanaConfidenceInterval = 0;
+  let ancientEgyptConfidenceInterval = 0;
+  let koreanConfidenceInterval = 0;
 
   const preload = () => {
     classifier = ml5.imageClassifier(imageModelURL + 'model.json');
@@ -33,14 +38,45 @@ function App() {
 
     p5.fill(255);
     p5.textSize(16);
-    p5.text(label, 300, 450);
+    p5.text('Ancient Greece', 0, 0);
+
+    p5.fill('blue')
+    p5.rect(0, 10, (100 * ancientGreeceInterval), 30);
 
     p5.fill(255);
     p5.textSize(16);
-    p5.text('Indian', 30, 70);
+    p5.text('Brazilian', 0, 20);
 
-    p5.fill('blue')
-    p5.rect(0, 0, (100 * indianConfidenceInterval), 30);
+    p5.fill('yellow')
+    p5.rect(0, 30, (100 * brazilianConfidenceInterval), 30);
+
+    p5.fill(255);
+    p5.textSize(16);
+    p5.text('Indian', 0, 40);
+
+    p5.fill('green')
+    p5.rect(0, 50, (100 * indianConfidenceInterval), 30);
+
+    p5.fill(255);
+    p5.textSize(16);
+    p5.text('Ghana', 0, 60);
+
+    p5.fill('pink')
+    p5.rect(0, 70, (100 * ghanaConfidenceInterval), 30);
+
+    p5.fill(255);
+    p5.textSize(16);
+    p5.text('Ancient Egypt', 0, 80);
+
+    p5.fill('orange')
+    p5.rect(0, 90, (100 * ancientEgyptConfidenceInterval), 30);
+
+    p5.fill(255);
+    p5.textSize(16);
+    p5.text('Korean', 0, 100);
+
+    p5.fill('purple')
+    p5.rect(0, 110, (100 * koreanConfidenceInterval), 30);
   }
 
   function classifyVideo() {
@@ -51,8 +87,12 @@ function App() {
   function getResult(error: Error, results: DataModel) {
     if (error) throw(error);
     
-    label = results[0].label; // TODO: might be able to delete eventually
+    ancientGreeceInterval = results[0].confidence
+    brazilianConfidenceInterval = results[1].confidence
     indianConfidenceInterval = results[2].confidence
+    ghanaConfidenceInterval = results[3].confidence
+    ancientEgyptConfidenceInterval = results[4].confidence
+    koreanConfidenceInterval = results[5].confidence
 
     classifyVideo();
   }
