@@ -2,7 +2,7 @@
 
 ## What is this?
 
-Highlighting women's perceived beauty as transistory and therefore harmless.
+Highlighting perceived beauty as transistory celebrations rather than elusive misalignments.
 
 ## To view:
 
