@@ -1,3 +1,7 @@
+body {
+  background: #F7F7F8;
+}
+
 .all-content {
   display: flex;
   align-items: center;
@@ -5,13 +9,21 @@
 }
 
 .intro {
-  font-size: 14px;
   flex: 1;
-  padding: 20px;
+  padding: 30px;
 }
 
 .intro h1 {
   font-size: 20px;
+  color: #60606C;
+}
+
+.intro p, .intro a {
+  color: #737382;
+}
+
+.intro p {
+  font-size: 14px;
 }
 
 .react-p5 {

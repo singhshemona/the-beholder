@@ -18,6 +18,8 @@ const Intro = () => {
       </p>
       <p>For now, this is a fun exploration to reclaim what so many women have been made
         othered for. Perhaps with more data it may grow into something more alluring.</p>
+      <p>Turn on your webcam (permissions must be enabled), and see where you shine.
+      </p>
     </div>
   );
 }

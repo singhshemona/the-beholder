@@ -12,11 +12,11 @@ const App = () => {
   let flippedVideo: P5.Element;
   
   let ancientGreeceInterval = 0;
-  let brazilianConfidenceInterval = 0;
-  let indianConfidenceInterval = 0;
+  let brazilConfidenceInterval = 0;
+  let indiaConfidenceInterval = 0;
   let ghanaConfidenceInterval = 0;
   let ancientEgyptConfidenceInterval = 0;
-  let koreanConfidenceInterval = 0;
+  let koreaConfidenceInterval = 0;
 
   const preload = () => {
     classifier = ml5.imageClassifier(imageModelURL + 'model.json');
@@ -24,63 +24,70 @@ const App = () => {
 
   const setup = (p5: P5, canvasParentRef: any) => {
     ml5.p5Utils.setP5Instance(p5);
-    p5.createCanvas(600, 650).parent(canvasParentRef);
+    p5.createCanvas(600, 700).parent(canvasParentRef);
     video = p5.createCapture(p5.VIDEO);
     video.size(500, 370);
     video.hide();
-    flippedVideo = ml5.flipImage(video)
+    flippedVideo = ml5.flipImage(video);
     classifyVideo();
   }
 
   const draw = (p5: P5) => {
-    p5.background('white');
-    p5.image(flippedVideo, 0, 0);
+    p5.background('#F7F7F8');
+    p5.image(flippedVideo, 0, 30);
 
-    drawLabel(p5, 'Ancient Greece', 410);
-    drawBackground(p5, 'blue', 395, ancientGreeceInterval);
+    // white background behind colors
+    p5.fill('white');
+    p5.noStroke();
+    p5.rect(0, 410, 500, 260, 3);
 
-    drawLabel(p5, 'Brazilian', 450);
-    drawBackground(p5, 'yellow', 435, brazilianConfidenceInterval);
+    drawLabel(p5, '#DDB771', 'Ancient Greece', 440);
+    drawBackground(p5, '#DDB771', 425, ancientGreeceInterval);
 
-    drawLabel(p5, 'Indian', 490);
-    drawBackground(p5, 'green', 475, indianConfidenceInterval);
+    drawLabel(p5, '#23967F', 'Brazil', 480);
+    drawBackground(p5, '#23967F', 465, brazilConfidenceInterval);
 
-    drawLabel(p5, 'Ghana', 530);
-    drawBackground(p5, 'pink', 515, ghanaConfidenceInterval);
+    drawLabel(p5, '#3772FF', 'India', 520);
+    drawBackground(p5, '#3772FF', 505, indiaConfidenceInterval);
 
-    drawLabel(p5, 'Ancient Egypt', 570);
-    drawBackground(p5, 'orange', 555, ancientEgyptConfidenceInterval);
+    drawLabel(p5, '#621A74', 'Ghana', 560);
+    drawBackground(p5, '#621A74', 545, ghanaConfidenceInterval);
 
-    drawLabel(p5, 'Korean', 610);
-    drawBackground(p5, 'purple', 595, koreanConfidenceInterval);
+    drawLabel(p5, '#97BC4E', 'Ancient Egypt', 600);
+    drawBackground(p5, '#97BC4E', 585, ancientEgyptConfidenceInterval);
+
+    drawLabel(p5, '#CE4B27', 'Korea', 640);
+    drawBackground(p5, '#CE4B27', 625, koreaConfidenceInterval);
   }
 
   const classifyVideo = () => {
-    flippedVideo = ml5.flipImage(video)
+    flippedVideo = ml5.flipImage(video);
     classifier.classify(flippedVideo, getResult);
   }
   
   const getResult = (error: Error, results: DataModel) => {
     if (error) throw(error);
     
-    ancientGreeceInterval = results[0].confidence
-    brazilianConfidenceInterval = results[1].confidence
-    indianConfidenceInterval = results[2].confidence
-    ghanaConfidenceInterval = results[3].confidence
-    ancientEgyptConfidenceInterval = results[4].confidence
-    koreanConfidenceInterval = results[5].confidence
+    ancientGreeceInterval = results[0].confidence;
+    brazilConfidenceInterval = results[1].confidence;
+    indiaConfidenceInterval = results[2].confidence;
+    ghanaConfidenceInterval = results[3].confidence;
+    ancientEgyptConfidenceInterval = results[4].confidence;
+    koreaConfidenceInterval = results[5].confidence;
 
     classifyVideo();
   }
   
-  const drawLabel = (p5: P5, label: string, yPos: number) => {
-    p5.fill('black');
+  const drawLabel = (p5: P5, fill: string, label: string, yPos: number) => {
+    p5.fill(fill);
     p5.textSize(14);
+    p5.textStyle(p5.BOLD);
     p5.text(label, 15, yPos);
   }
 
   const drawBackground = (p5: P5, fill: string, yPos: number, interval: number) => {
-    p5.fill(fill)
+    p5.fill(fill);
+    p5.noStroke();
     p5.rect(125, yPos, (100 * interval), 20, 3);
   }
 
