@@ -1,7 +1,7 @@
-import './App.css';
 import Sketch from 'react-p5';
 import P5 from 'p5';
 import { DataModel } from './model';
+import Intro from './Intro';
 
 const ml5 = require('ml5');
 
@@ -24,7 +24,7 @@ const App = () => {
 
   const setup = (p5: P5, canvasParentRef: any) => {
     ml5.p5Utils.setP5Instance(p5);
-    p5.createCanvas(600, 800).parent(canvasParentRef);
+    p5.createCanvas(600, 650).parent(canvasParentRef);
     video = p5.createCapture(p5.VIDEO);
     video.size(500, 370);
     video.hide();
@@ -36,23 +36,23 @@ const App = () => {
     p5.background('white');
     p5.image(flippedVideo, 0, 0);
 
-    drawLabel(p5, 'Ancient Greece', 400);
-    drawBackground(p5, 'blue', 385, ancientGreeceInterval);
+    drawLabel(p5, 'Ancient Greece', 410);
+    drawBackground(p5, 'blue', 395, ancientGreeceInterval);
 
-    drawLabel(p5, 'Brazilian', 580);
-    drawBackground(p5, 'yellow', 585, brazilianConfidenceInterval);
+    drawLabel(p5, 'Brazilian', 450);
+    drawBackground(p5, 'yellow', 435, brazilianConfidenceInterval);
 
-    drawLabel(p5, 'Indian', 80);
-    drawBackground(p5, 'green', 50, indianConfidenceInterval);
+    drawLabel(p5, 'Indian', 490);
+    drawBackground(p5, 'green', 475, indianConfidenceInterval);
 
-    drawLabel(p5, 'Ghana', 110);
-    drawBackground(p5, 'pink', 70, ghanaConfidenceInterval);
+    drawLabel(p5, 'Ghana', 530);
+    drawBackground(p5, 'pink', 515, ghanaConfidenceInterval);
 
-    drawLabel(p5, 'Ancient Egypt', 140);
-    drawBackground(p5, 'orange', 90, ancientEgyptConfidenceInterval);
+    drawLabel(p5, 'Ancient Egypt', 570);
+    drawBackground(p5, 'orange', 555, ancientEgyptConfidenceInterval);
 
-    drawLabel(p5, 'Korean', 170);
-    drawBackground(p5, 'purple', 110, koreanConfidenceInterval);
+    drawLabel(p5, 'Korean', 610);
+    drawBackground(p5, 'purple', 595, koreanConfidenceInterval);
   }
 
   const classifyVideo = () => {
@@ -76,16 +76,17 @@ const App = () => {
   const drawLabel = (p5: P5, label: string, yPos: number) => {
     p5.fill('black');
     p5.textSize(14);
-    p5.text(label, 0, yPos);
+    p5.text(label, 15, yPos);
   }
 
   const drawBackground = (p5: P5, fill: string, yPos: number, interval: number) => {
     p5.fill(fill)
-    p5.rect(115, yPos, (100 * interval), 20);
+    p5.rect(125, yPos, (100 * interval), 20, 3);
   }
 
   return (
-    <div className="App">
+    <div className="all-content">
+      <Intro />
       <Sketch setup={setup} draw={draw} preload={preload} />
     </div>
   );

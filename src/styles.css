@@ -1,0 +1,19 @@
+.all-content {
+  display: flex;
+  align-items: center;
+  column-count: 3;
+}
+
+.intro {
+  font-size: 14px;
+  flex: 1;
+  padding: 20px;
+}
+
+.intro h1 {
+  font-size: 20px;
+}
+
+.react-p5 {
+  flex: 2;
+}
