@@ -5,7 +5,7 @@ import { DataModel } from './model';
 
 const ml5 = require('ml5');
 
-function App() {
+const App = () => {
   let classifier: { classify: (arg0: any, arg1: (error: Error, results: DataModel) => void) => void; };
   let imageModelURL = 'https://teachablemachine.withgoogle.com/models/wZm28bHVl/';
   let video: P5.Element;
@@ -24,67 +24,43 @@ function App() {
 
   const setup = (p5: P5, canvasParentRef: any) => {
     ml5.p5Utils.setP5Instance(p5);
-    p5.createCanvas(1000, 1000).parent(canvasParentRef);
+    p5.createCanvas(600, 800).parent(canvasParentRef);
     video = p5.createCapture(p5.VIDEO);
-    video.size(700, 525);
+    video.size(500, 370);
     video.hide();
     flippedVideo = ml5.flipImage(video)
     classifyVideo();
   }
 
   const draw = (p5: P5) => {
-    p5.background(0);
+    p5.background('white');
     p5.image(flippedVideo, 0, 0);
 
-    p5.fill(255);
-    p5.textSize(16);
-    p5.text('Ancient Greece', 0, 0);
+    drawLabel(p5, 'Ancient Greece', 400);
+    drawBackground(p5, 'blue', 385, ancientGreeceInterval);
 
-    p5.fill('blue')
-    p5.rect(0, 10, (100 * ancientGreeceInterval), 30);
+    drawLabel(p5, 'Brazilian', 580);
+    drawBackground(p5, 'yellow', 585, brazilianConfidenceInterval);
 
-    p5.fill(255);
-    p5.textSize(16);
-    p5.text('Brazilian', 0, 20);
+    drawLabel(p5, 'Indian', 80);
+    drawBackground(p5, 'green', 50, indianConfidenceInterval);
 
-    p5.fill('yellow')
-    p5.rect(0, 30, (100 * brazilianConfidenceInterval), 30);
+    drawLabel(p5, 'Ghana', 110);
+    drawBackground(p5, 'pink', 70, ghanaConfidenceInterval);
 
-    p5.fill(255);
-    p5.textSize(16);
-    p5.text('Indian', 0, 40);
+    drawLabel(p5, 'Ancient Egypt', 140);
+    drawBackground(p5, 'orange', 90, ancientEgyptConfidenceInterval);
 
-    p5.fill('green')
-    p5.rect(0, 50, (100 * indianConfidenceInterval), 30);
-
-    p5.fill(255);
-    p5.textSize(16);
-    p5.text('Ghana', 0, 60);
-
-    p5.fill('pink')
-    p5.rect(0, 70, (100 * ghanaConfidenceInterval), 30);
-
-    p5.fill(255);
-    p5.textSize(16);
-    p5.text('Ancient Egypt', 0, 80);
-
-    p5.fill('orange')
-    p5.rect(0, 90, (100 * ancientEgyptConfidenceInterval), 30);
-
-    p5.fill(255);
-    p5.textSize(16);
-    p5.text('Korean', 0, 100);
-
-    p5.fill('purple')
-    p5.rect(0, 110, (100 * koreanConfidenceInterval), 30);
+    drawLabel(p5, 'Korean', 170);
+    drawBackground(p5, 'purple', 110, koreanConfidenceInterval);
   }
 
-  function classifyVideo() {
+  const classifyVideo = () => {
     flippedVideo = ml5.flipImage(video)
     classifier.classify(flippedVideo, getResult);
   }
   
-  function getResult(error: Error, results: DataModel) {
+  const getResult = (error: Error, results: DataModel) => {
     if (error) throw(error);
     
     ancientGreeceInterval = results[0].confidence
@@ -95,6 +71,17 @@ function App() {
     koreanConfidenceInterval = results[5].confidence
 
     classifyVideo();
+  }
+  
+  const drawLabel = (p5: P5, label: string, yPos: number) => {
+    p5.fill('black');
+    p5.textSize(14);
+    p5.text(label, 0, yPos);
+  }
+
+  const drawBackground = (p5: P5, fill: string, yPos: number, interval: number) => {
+    p5.fill(fill)
+    p5.rect(115, yPos, (100 * interval), 20);
   }
 
   return (
